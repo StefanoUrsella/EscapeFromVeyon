@@ -1,7 +1,12 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Terrorista{
     int spawnRate;
     boolean gameOver;
     Thread osama;
+
+    public List<Bomba> bombeAttive = new ArrayList<>();
 
     public Terrorista(int spawnRate, boolean gameOver){
         this.spawnRate = spawnRate;
@@ -28,6 +33,7 @@ public class Terrorista{
 
     private synchronized void spawnBomba(int x, int speed){
         Bomba bomba = new Bomba(x, speed);
+        bombeAttive.add(bomba);
     }
 
     public synchronized void modalità(){
