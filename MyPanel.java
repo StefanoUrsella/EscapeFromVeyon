@@ -9,7 +9,7 @@ public  class MyPanel extends JPanel{
 
     //private Image imgBomba; NON USO PIù L'IMMAGINE
 
-    public List<Bomba> bombeAttive = new java.util.concurrent.CopyOnWriteArrayList<>();//Invece che cambiare dierettamente il valore della "ArrayList<>()"-->Fa una copia, Modifica la copia, Sostituisce l'originale con la Copia-->Sennò con i Tanti thread si incastrerebbe
+    public List<Bomba> bombeAttive = new java.util.concurrent.CopyOnWriteArrayList<>();//Invece che cambiare dierettamente il valore della "ArrayList<>()"-->Fa una copia, Modifica la copia, Sostituisce l'originale con la Copia-->Sennò con i Tanti thread si incastrerebbe   (Gemini)
 
     public MyPanel(){
         /*Toolkit tk = Toolkit.getDefaultToolkit();
@@ -24,7 +24,7 @@ public  class MyPanel extends JPanel{
 
         int repaintRate = 50;
 
-        //Thread che fà repaint ogni tot tempo-->Se lo metto dentro alle bombe avrei TROPPI thread che fanno repaint-->Si incarterebbe tutto
+        //Thread che fà repaint ogni tot tempo-->Se lo metto dentro alle bombe avrei TROPPI thread che fanno repaint-->Si incarterebbe tutto   (Gemini)
         Thread austrianRepainter = new Thread(()->{
             while(true){
 
