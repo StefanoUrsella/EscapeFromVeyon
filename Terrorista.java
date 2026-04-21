@@ -5,12 +5,14 @@ public class Terrorista{
     int spawnRate;
     boolean gameOver;
     Thread osama;
+    MyPanel panel;
 
     public List<Bomba> bombeAttive = new ArrayList<>();
 
-    public Terrorista(int spawnRate, boolean gameOver){
+    public Terrorista(int spawnRate, boolean gameOver, MyPanel panel){
         this.spawnRate = spawnRate;
         this.gameOver = gameOver;
+        this.panel = panel;
         bombarda(spawnRate);
     }
 
@@ -19,7 +21,12 @@ public class Terrorista{
             while(!gameOver){
                 int spawnX = (int)(Math.random()*10);
                 int bombSpeed = (int)(Math.random()*10);
-                spawnBomba(spawnX, bombSpeed);
+                int startingY = 3;
+                
+                spawnBomba(spawnX, startingY, bombSpeed);
+
+                panel.repaint();
+
                 try {
                     Thread.sleep(spawnRate);
                 } catch (InterruptedException e) {
@@ -31,8 +38,8 @@ public class Terrorista{
         osama.start();
     }
 
-    private synchronized void spawnBomba(int x, int speed){
-        Bomba bomba = new Bomba(x, speed);
+    private synchronized void spawnBomba(int x, int startingY, int speed){
+        Bomba bomba = new Bomba(x, startingY, speed);
         bombeAttive.add(bomba);
     }
 
