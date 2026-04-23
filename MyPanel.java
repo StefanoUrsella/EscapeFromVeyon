@@ -17,7 +17,7 @@ public  class MyPanel extends JPanel{
     public List<Proiettile> proiettiliAttivi = new java.util.concurrent.CopyOnWriteArrayList<>();
     public List<PowerUp> powerUpAttivi = new java.util.concurrent.CopyOnWriteArrayList<>();
 
-    public Giocatore giocatore = new Giocatore(0, 500, 5, this);
+    public Giocatore giocatore = new Giocatore(0, 600, 5, this);
 
     private int repaintRate = 50;
 
@@ -30,6 +30,8 @@ public  class MyPanel extends JPanel{
     private int cooldownSparare = standardFirerate;
     private long istantePresoPowerup = 0;
     private int durataPowerup = 4000;
+
+    private int punteggio = 0;
 
     public MyPanel(){
         /*Toolkit tk = Toolkit.getDefaultToolkit();
@@ -131,6 +133,15 @@ public  class MyPanel extends JPanel{
             g.setColor(Color.YELLOW);
             g.fillRect(p.getX(), p.getY()-40, 10, 30);
         }
+
+        //Disegnare Pavimento
+        g.setColor(Color.GREEN);
+        g.fillRect(0, 620, 900, 200);
+
+        //Disegnare Punteggio
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("TimesRoman", Font.BOLD, 20));
+        g.drawString("SCORE: " + punteggio, 450, 650);
     }
 
     public void buildingIronDome(Graphics g, int x, int y) {
@@ -164,6 +175,9 @@ public  class MyPanel extends JPanel{
                     b.distruggi();
                     proiettiliAttivi.remove(p);
                     bombeAttive.remove(b);
+                    
+                    punteggio++;
+
                     break;
                 }
             }
