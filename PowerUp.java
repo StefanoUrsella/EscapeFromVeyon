@@ -1,29 +1,28 @@
 import java.awt.Rectangle;
 
-public class Bomba implements Runnable{//Serve per usare "run()"   (Gemini)
+public class PowerUp implements Runnable{//Serve per usare "run()"   (Gemini)
     private int x;
     private int y;
     private int speed;
     private int maxY;
     private MyPanel panel;
-    private boolean attiva;
+    private boolean attivo;
 
-    public Bomba(int x, int y, int speed, int maxY, MyPanel panel){
+    public PowerUp(int x, int y, int speed, int maxY, MyPanel panel){
         this.x = x;
         this.y = y;
         this.speed = speed;
         this.maxY = maxY;
         this.panel = panel;
-        attiva = true;
+        attivo = true;
 
         new Thread(this).start();//Creo un thread di questo oggetto-->lo Starto   (Gemini)
     }
 
     @Override
     public void run() {//Esegue il thread in parallelo al resto della classe   (Gemini)
-        while(attiva == true && y < maxY){
+        while(attivo == true && y < maxY){
             y += speed;
-            //panel.repaint();//Aggiorno il "MyPanel"
 
             try{
                 Thread.sleep(100);//Tempo che aspetta prima di muoversi di nuovo
@@ -32,12 +31,12 @@ public class Bomba implements Runnable{//Serve per usare "run()"   (Gemini)
             }
         }
 
-        attiva = false;//Sono uscito dal while-->la bomba ha toccato terra-->fermo questa bomba
-        panel.bombeAttive.remove(this);//Sono uscito dal while-->la bomba ha toccato terra-->tolgo quest abomba
+        attivo = false;//Sono uscito dal while-->la bomba ha toccato terra-->fermo questo powerup
+        panel.powerUpAttivi.remove(this);//Sono uscito dal while-->il powerup ha toccato terra-->tolgo questo powerup
     }
 
     public void distruggi(){
-        attiva = false;
+        attivo = false;
     }
 
     public int getX() {
@@ -52,8 +51,8 @@ public class Bomba implements Runnable{//Serve per usare "run()"   (Gemini)
         return speed;
     }
 
-    //Crea la "Hitbox" della Bomba   (Gemini)
+    //Crea la "Hitbox" del powerup   (Gemini)
     public Rectangle getBounds(){//Resituisce un Rettangolo-->poi vedo se si intersecano
-        return new Rectangle(x, y+20, 40, 40);
+        return new Rectangle(x, y, 40, 40);
     }
 }

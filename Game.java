@@ -13,7 +13,7 @@ public class Game{
         Container c = frame.getContentPane();
         c.add(panel);
 
-        Terrorista terrorista = new Terrorista(10, false, panel);
+        Terrorista terrorista = new Terrorista(1000, false, panel);
 
         frame.show();
     }

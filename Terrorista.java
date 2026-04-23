@@ -7,8 +7,6 @@ public class Terrorista{
     Thread osama;
     MyPanel panel;
 
-    //public List<Bomba> bombeAttive = new ArrayList<>(); LA METTO SOLO SU "MyPanel"
-
     public Terrorista(int spawnRate, boolean gameOver, MyPanel panel){
         this.spawnRate = spawnRate;
         this.gameOver = gameOver;
@@ -23,7 +21,12 @@ public class Terrorista{
                 int bombSpeed = (int)(Math.random()*10);
                 int startingY = 3;
                 
-                spawnBomba(spawnX, startingY, bombSpeed);
+                int numeroCasuale = (int)(Math.random()*10);
+                if(numeroCasuale == 1){
+                    spawnPowerup(spawnX, startingY, bombSpeed);
+                }else{
+                    spawnBomba(spawnX, startingY, bombSpeed);
+                }
 
                 try {
                     Thread.sleep(spawnRate);
@@ -37,8 +40,13 @@ public class Terrorista{
     }
 
     private synchronized void spawnBomba(int x, int startingY, int speed){
-        Bomba bomba = new Bomba(x, startingY, speed, 200, panel);
+        Bomba bomba = new Bomba(x, startingY, speed, 700, panel);
         panel.bombeAttive.add(bomba);
+    }
+
+    private synchronized void spawnPowerup(int x, int startingY, int speed){
+        PowerUp powerUp = new PowerUp(x, startingY, speed, 700, panel);
+        panel.powerUpAttivi.add(powerUp);
     }
 
     public synchronized void modalità(){
