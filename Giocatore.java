@@ -7,7 +7,7 @@ public class Giocatore implements Runnable{//Serve per usare "run()"   (Gemini)
     private MyPanel panel;
     private boolean sinistra;
     private boolean destra;
-    private boolean gameOver;
+    private boolean gameOver = false;
 
     public Giocatore(int x, int y, int speed, MyPanel panel){
         this.x = x;
@@ -17,8 +17,6 @@ public class Giocatore implements Runnable{//Serve per usare "run()"   (Gemini)
 
         sinistra = false;
         destra = false;
-
-        gameOver = false;
 
         new Thread(this).start();//Creo un thread di questo oggetto-->lo Starto   (Gemini)
     }
@@ -70,5 +68,9 @@ public class Giocatore implements Runnable{//Serve per usare "run()"   (Gemini)
 
     public void setSinistra(boolean direzione){
         sinistra = direzione;
+    }
+
+    public void gameOver(){
+        gameOver = true;
     }
 }

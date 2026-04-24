@@ -18,12 +18,14 @@ public class Terrorista{
         osama = new Thread(()->{
             while(!gameOver){
                 int spawnX = (int)(Math.random()*550);
-                int bombSpeed = (int)(Math.random()*10);
+                int bombSpeed = (int)(Math.random()*9+1);
                 int startingY = 3;
                 
                 int numeroCasuale = (int)(Math.random()*10);
-                if(numeroCasuale == 1){
+                if(numeroCasuale == 2){
                     spawnPowerup(spawnX, startingY, bombSpeed);
+                }else if(numeroCasuale == 3){
+                    spawnEsplosivo(spawnX, startingY, bombSpeed);
                 }else{
                     spawnBomba(spawnX, startingY, bombSpeed);
                 }
@@ -40,13 +42,18 @@ public class Terrorista{
     }
 
     private synchronized void spawnBomba(int x, int startingY, int speed){
-        Bomba bomba = new Bomba(x, startingY, speed, 700, panel);
+        Bomba bomba = new Bomba(x, startingY, speed, 630, panel);
         panel.bombeAttive.add(bomba);
     }
 
     private synchronized void spawnPowerup(int x, int startingY, int speed){
-        PowerUp powerUp = new PowerUp(x, startingY, speed, 700, panel);
+        PowerUp powerUp = new PowerUp(x, startingY, speed, 630, panel);
         panel.powerUpAttivi.add(powerUp);
+    }
+
+    private synchronized void spawnEsplosivo(int x, int startingY, int speed){
+        Esplosivo esplosivo = new Esplosivo(x, startingY, speed, 630, panel);
+        panel.esplosiviAttivi.add(esplosivo);
     }
 
     public synchronized void modalità(){

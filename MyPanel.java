@@ -16,14 +16,17 @@ public  class MyPanel extends JPanel{
     public List<Bomba> bombeAttive = new java.util.concurrent.CopyOnWriteArrayList<>();//Invece che cambiare dierettamente il valore della "ArrayList<>()"-->Fa una copia, Modifica la copia, Sostituisce l'originale con la Copia-->Sennò con i Tanti thread si incastrerebbe   (Gemini)
     public List<Proiettile> proiettiliAttivi = new java.util.concurrent.CopyOnWriteArrayList<>();
     public List<PowerUp> powerUpAttivi = new java.util.concurrent.CopyOnWriteArrayList<>();
+    public List<Esplosivo> esplosiviAttivi = new java.util.concurrent.CopyOnWriteArrayList<>();
+    public List<Esplosione> esplosoniAttive = new java.util.concurrent.CopyOnWriteArrayList<>();
 
-    public Giocatore giocatore = new Giocatore(0, 600, 5, this);
+
+    public Giocatore giocatore = new Giocatore(0, 600, 15, this);
 
     private int repaintRate = 50;
 
 
     //Variabili proiettili
-    private int bulletSpeed = 10;
+    private int bulletSpeed = 40;
     private long istanteUltimoSparo = 0;
     private int standardFirerate = 500;
     private int CIWSfirerate = 10;
@@ -32,6 +35,8 @@ public  class MyPanel extends JPanel{
     private int durataPowerup = 4000;
 
     private int punteggio = 0;
+
+    private boolean gameOver = false;
 
     public MyPanel(){
         /*Toolkit tk = Toolkit.getDefaultToolkit();
@@ -47,7 +52,7 @@ public  class MyPanel extends JPanel{
 
         //Thread che fà repaint ogni tot tempo-->Se lo metto dentro alle bombe avrei TROPPI thread che fanno repaint-->Si incarterebbe tutto   (Gemini)
         Thread austrianRepainter = new Thread(()->{
-            while(true){
+            while(true && gameOver == false){
 
                 controllareCollisioni();
 
@@ -58,6 +63,11 @@ public  class MyPanel extends JPanel{
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+            }
+
+            //Sennò non repainta più e non disegna lo schermo di GameOver
+            if(gameOver){
+                repaint();
             }
         });
 
@@ -117,10 +127,16 @@ public  class MyPanel extends JPanel{
             g.fillOval(b.getX(), b.getY(), 40, 40);
         }
 
-        //Disegare powerup
+        //Disegare Powerup
         for (PowerUp pw : powerUpAttivi){
             g.setColor(Color.BLUE);
             g.fillOval(pw.getX(), pw.getY(), 40, 40);
+        }
+
+        //Disegnare Esplosivi
+        for (Esplosivo e : esplosiviAttivi){
+            g.setColor(Color.YELLOW);
+            g.fillOval(e.getX(), e.getY(), 40, 40);
         }
 
         //Disegnare Player
@@ -134,6 +150,12 @@ public  class MyPanel extends JPanel{
             g.fillRect(p.getX(), p.getY()-40, 10, 30);
         }
 
+        //Disegnare esplosioni
+        for (Esplosione ex : esplosoniAttive){
+            g.setColor(Color.ORANGE);
+            g.fillOval(ex.getX()-100, ex.getY()-100, 300, 300);
+        }
+
         //Disegnare Pavimento
         g.setColor(Color.GREEN);
         g.fillRect(0, 620, 900, 200);
@@ -142,6 +164,14 @@ public  class MyPanel extends JPanel{
         g.setColor(Color.BLACK);
         g.setFont(new Font("TimesRoman", Font.BOLD, 20));
         g.drawString("SCORE: " + punteggio, 450, 650);
+
+        //Disegnare Schermo di GameOver
+        if(gameOver){
+            g.setFont(new Font("TimesRoman", Font.BOLD, 40));
+            g.drawString("GAME OVER", 170, 450);
+            g.setFont(new Font("TimesRoman", Font.BOLD, 20));
+            g.drawString("SCORE: " + punteggio, 200, 500);
+        }
     }
 
     public void buildingIronDome(Graphics g, int x, int y) {
@@ -194,6 +224,57 @@ public  class MyPanel extends JPanel{
                     break;
                 }
             }
+
+            for(Esplosivo e : esplosiviAttivi){
+                if(p.getBounds().intersects(e.getBounds())){
+                    Esplosione esplosione = new Esplosione(e.getX(), e.getY(), this);
+                    esplosoniAttive.add(esplosione);
+
+                    p.distruggi();
+                    e.distruggi();
+                    proiettiliAttivi.remove(p);
+                    esplosiviAttivi.remove(e);
+
+                    break;
+                }
+            }
         }
+
+        for (Esplosione ex : esplosoniAttive){
+            for(Bomba b : bombeAttive){
+                if(ex.getBounds().intersects(b.getBounds())){
+                    b.distruggi();
+                    bombeAttive.remove(b);
+                    
+                    punteggio++;
+                }
+            }
+
+            for(Esplosivo e : esplosiviAttivi){
+                if(ex.getBounds().intersects(e.getBounds())){
+                    Esplosione esplosione = new Esplosione(e.getX(), e.getY(), this);
+                    esplosoniAttive.add(esplosione);
+
+                    e.distruggi();
+                    esplosiviAttivi.remove(e);
+                    
+                    punteggio++;
+                }
+            }
+
+            for(PowerUp pw : powerUpAttivi){
+                if(ex.getBounds().intersects(pw.getBounds())){
+                    pw.distruggi();
+                    powerUpAttivi.remove(pw);
+
+                    istantePresoPowerup = System.currentTimeMillis();
+                }
+            }
+        }
+    }
+
+    public void gameOver(){
+        gameOver = true;
+        giocatore.gameOver();
     }
 }
