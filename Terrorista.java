@@ -42,7 +42,7 @@ public class Terrorista{
     }
 
     private synchronized void spawnBomba(int x, int startingY, int speed){
-        Bomba bomba = new Bomba(x, startingY, speed, 630, panel);
+        Bomba bomba = new Bomba(x, startingY, speed, 600, panel);
         panel.bombeAttive.add(bomba);
     }
 
@@ -52,7 +52,7 @@ public class Terrorista{
     }
 
     private synchronized void spawnEsplosivo(int x, int startingY, int speed){
-        Esplosivo esplosivo = new Esplosivo(x, startingY, speed, 630, panel);
+        Esplosivo esplosivo = new Esplosivo(x, startingY, speed, 600, panel);
         panel.esplosiviAttivi.add(esplosivo);
     }
 

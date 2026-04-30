@@ -32,8 +32,10 @@ public class Bomba implements Runnable{//Serve per usare "run()"   (Gemini)
             }
 
         }
-
+        
         if(y > maxY){
+            EsplosioneNaturale esplosioneNaturale = new EsplosioneNaturale(x, y, panel);
+            panel.esplosoniNaturali.add(esplosioneNaturale);
             panel.gameOver();
         }
 

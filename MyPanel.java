@@ -18,6 +18,7 @@ public  class MyPanel extends JPanel{
     public List<PowerUp> powerUpAttivi = new java.util.concurrent.CopyOnWriteArrayList<>();
     public List<Esplosivo> esplosiviAttivi = new java.util.concurrent.CopyOnWriteArrayList<>();
     public List<Esplosione> esplosoniAttive = new java.util.concurrent.CopyOnWriteArrayList<>();
+    public List<EsplosioneNaturale> esplosoniNaturali = new java.util.concurrent.CopyOnWriteArrayList<>();
 
 
     public Giocatore giocatore = new Giocatore(0, 600, 15, this);
@@ -156,6 +157,12 @@ public  class MyPanel extends JPanel{
             g.fillOval(ex.getX()-100, ex.getY()-100, 300, 300);
         }
 
+        //Disegnare esplosioni Naturali
+        for (EsplosioneNaturale exn : esplosoniNaturali){
+            g.setColor(Color.ORANGE);
+            g.fillOval(exn.getX(), exn.getY(), 70, 70);
+        }
+
         //Disegnare Pavimento
         g.setColor(Color.GREEN);
         g.fillRect(0, 620, 900, 200);
@@ -205,6 +212,9 @@ public  class MyPanel extends JPanel{
                     b.distruggi();
                     proiettiliAttivi.remove(p);
                     bombeAttive.remove(b);
+
+                    EsplosioneNaturale esplosioneNaturale = new EsplosioneNaturale(b.getX(), b.getY(), this);
+                    esplosoniNaturali.add(esplosioneNaturale);
                     
                     punteggio++;
 

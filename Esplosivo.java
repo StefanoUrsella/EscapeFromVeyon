@@ -34,6 +34,8 @@ public class Esplosivo implements Runnable{
         }
 
         if(y > maxY){
+            EsplosioneNaturale esplosioneNaturale = new EsplosioneNaturale(x, y, panel);
+            panel.esplosoniNaturali.add(esplosioneNaturale);
             panel.gameOver();
         }
 
