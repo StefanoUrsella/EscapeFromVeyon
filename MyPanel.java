@@ -245,6 +245,8 @@ public  class MyPanel extends JPanel{
                     proiettiliAttivi.remove(p);
                     esplosiviAttivi.remove(e);
 
+                    punteggio++;
+
                     break;
                 }
             }
